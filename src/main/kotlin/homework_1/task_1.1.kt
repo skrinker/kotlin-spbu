@@ -2,10 +2,8 @@ import java.lang.Integer.parseInt
 import java.lang.NumberFormatException
 
 fun factorialRec(number: Int): Int {
-    if (number < 1)
-        return 1
-    else
-        return number * factorialRec(number - 1)
+    if (number < 1) return 1
+    else return number * factorialRec(number - 1)
 }
 
 fun factorialLoop(number: Int): Int {
