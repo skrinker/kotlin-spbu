@@ -12,7 +12,7 @@ fun countMatches(text: String, substring: String): Int {
         index = text.indexOf(substring, index)
         if (index != -1) {
             count++
-            index += substring.length
+            index++
         } else {
             return count
         }
