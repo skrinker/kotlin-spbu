@@ -1,4 +1,4 @@
-package homework_1
+package homework1
 
 fun getStringInput(inputSuggestion: String): String {
     println(inputSuggestion)
