@@ -1,3 +1,5 @@
+package homework1
+
 import java.lang.Integer.parseInt
 import java.lang.NumberFormatException
 
