@@ -1,8 +1,7 @@
-package common.PerformedCommandStorage
+package performedcommandstorage
+import java.util.Stack
 
-import java.util.*
-
-class PerformedCommandStorage() {
+class PerformedCommandStorage {
     private var actions: Stack<Action> = Stack()
 
     fun executeOperation(action: Action) {

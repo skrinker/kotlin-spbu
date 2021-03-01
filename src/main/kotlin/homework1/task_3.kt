@@ -1,6 +1,7 @@
 package homework1
-
-import common.PerformedCommandStorage.*
+import performedcommandstorage.DequeOfNumbers
+import performedcommandstorage.PerformedCommandStorage
+import performedcommandstorage.Push
 
 fun main() {
     val commandStorage = PerformedCommandStorage()
@@ -9,8 +10,6 @@ fun main() {
     commandStorage.executeOperation(Push(1, numbers))
     commandStorage.executeOperation(Push(2, numbers))
     commandStorage.executeOperation(Push(3, numbers))
-    commandStorage.executeOperation(InsertBack(4, numbers))
-    commandStorage.executeOperation(Rearrange(0, 1, numbers))
     commandStorage.undoOperation()
     commandStorage.undoOperation()
     commandStorage.undoOperation()
@@ -18,4 +17,3 @@ fun main() {
 
     numbers.print()
 }
-

@@ -1,5 +1,4 @@
-package common.PerformedCommandStorage
-
+package performedcommandstorage
 class DequeOfNumbers(private val numbers: ArrayDeque<Int>) {
     fun insertBack(value: Int) = numbers.addFirst(value)
     fun push(value: Int) = numbers.addLast(value)
