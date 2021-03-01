@@ -11,8 +11,12 @@ class PerformedCommandStorage() {
     }
 
     fun undoOperation() {
-        actions.lastElement().undo()
-        actions.pop()
+        if (actions.empty()) {
+            println("Storage empty")
+        } else {
+            actions.lastElement().undo()
+            actions.pop()
+        }
     }
 
     fun getHistory() = actions
