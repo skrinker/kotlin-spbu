@@ -3,12 +3,15 @@ package homework1
 import java.lang.Integer.parseInt
 import java.lang.NumberFormatException
 
-fun factorialRec(number: Int): Int {
-    if (number < 1) return 1
-    else return number * factorialRec(number - 1)
+fun getFactorialRec(number: Int): Int {
+    return if (number < 1) {
+        1
+    } else {
+        number * getFactorialRec(number - 1)
+    }
 }
 
-fun factorialLoop(number: Int): Int {
+fun getFactorialIterative(number: Int): Int {
     var result = 1
     for (i in 1..number) result *= i
     return result
@@ -27,7 +30,7 @@ fun getInputNumber(): Int? {
 fun main() {
     val number: Int = getInputNumber() ?: -1
     if (number > -1) {
-        println(factorialRec(number))
-        println(factorialLoop(number))
+        println(getFactorialRec(number))
+        println(getFactorialIterative(number))
     }
 }
