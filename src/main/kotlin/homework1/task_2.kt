@@ -12,12 +12,11 @@ fun String.countMatches(substring: String): Int {
         count++
         return count
     }
+    index = this.indexOf(substring, index)
     while (index != -1 && substring.isNotEmpty()) {
+        count++
+        index++
         index = this.indexOf(substring, index)
-        if (index != -1) {
-            count++
-            index++
-        }
     }
     return count
 }
