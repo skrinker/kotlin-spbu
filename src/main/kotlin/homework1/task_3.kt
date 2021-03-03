@@ -64,10 +64,4 @@ fun main() {
     numbers.print()
 
     commandStorage.undoOperation()
-
-//    commandStorage.executeOperation(Push(3, numbers))
-//    commandStorage.undoOperation()
-//    commandStorage.undoOperation()
-//    commandStorage.undoOperation()
-//    commandStorage.undoOperation()
 }
