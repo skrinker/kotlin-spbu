@@ -5,23 +5,26 @@ fun getStringInput(inputSuggestion: String): String {
     return readLine().toString()
 }
 
-fun countMatches(text: String, substring: String): Int {
+fun String.countMatches(substring: String): Int {
     var index = 0
     var count = 0
-    while (true) {
-        index = text.indexOf(substring, index)
+    if (this == substring) {
+        count++
+        return count
+    }
+    while (index != -1 && substring.isNotEmpty()) {
+        index = this.indexOf(substring, index)
         if (index != -1) {
             count++
             index++
-        } else {
-            return count
         }
     }
+    return count
 }
 
 fun main() {
     val text = getStringInput("Input text:")
     val substring = getStringInput("Input string to find:")
-    val matches = countMatches(text, substring)
+    val matches = text.countMatches(substring)
     println(matches)
 }
