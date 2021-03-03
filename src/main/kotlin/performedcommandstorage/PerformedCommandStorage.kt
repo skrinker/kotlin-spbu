@@ -11,12 +11,13 @@ class PerformedCommandStorage {
 
     fun undoOperation() {
         if (actions.empty()) {
-            println("Storage empty")
+            println()
+            println("Storage empty.")
         } else {
             actions.lastElement().undo()
             actions.pop()
         }
     }
 
-    fun getHistory() = actions
+    fun getActions() = actions
 }
