@@ -17,11 +17,13 @@ repositories {
 dependencies {
     testImplementation(kotlin("test-junit"))
 
-    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.14.2")
+    detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.15.0")
 }
 
 detekt {
     failFast = true // fail build on any finding
+    config = files("./config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
 }
 
 tasks.test {
