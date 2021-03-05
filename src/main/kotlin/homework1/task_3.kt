@@ -1,67 +1,76 @@
 package homework1
-import performedcommandstorage.DequeOfNumbers
-import performedcommandstorage.InsertBack
-import performedcommandstorage.PerformedCommandStorage
-import performedcommandstorage.Push
-import performedcommandstorage.Rearrange
+
+import performedCommandStorage.InsertBack
+import performedCommandStorage.PerformedCommandStorage
+import performedCommandStorage.Push
+import performedCommandStorage.Rearrange
 
 const val NUMBER0 = 0
 const val NUMBER1 = 1
 const val NUMBER2 = 2
 
+private fun MutableList<Int>.print() {
+    if (this.isEmpty()) {
+        print("Empty.")
+    } else {
+        this.forEach { print("$it ") }
+    }
+    println()
+}
+
 fun main() {
     val commandStorage = PerformedCommandStorage()
-    val numbersArray: ArrayDeque<Int> = ArrayDeque()
-    val numbers = DequeOfNumbers(numbersArray)
+    val numbers = mutableListOf<Int>()
+
     numbers.print()
 
-    commandStorage.executeOperation(Push(NUMBER0, numbers))
+    commandStorage.executeOperation(Push(NUMBER0), numbers)
     numbers.print()
 
-    commandStorage.executeOperation(Push(NUMBER1, numbers))
+    commandStorage.executeOperation(Push(NUMBER1), numbers)
     numbers.print()
 
-    commandStorage.executeOperation(Push(NUMBER2, numbers))
+    commandStorage.executeOperation(Push(NUMBER2), numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.executeOperation(InsertBack(NUMBER1, numbers))
+    commandStorage.executeOperation(InsertBack(NUMBER1), numbers)
     numbers.print()
 
-    commandStorage.executeOperation(InsertBack(NUMBER2, numbers))
+    commandStorage.executeOperation(InsertBack(NUMBER2), numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.executeOperation(Rearrange(NUMBER0, NUMBER1, numbers))
+    commandStorage.executeOperation(Rearrange(NUMBER0, NUMBER1), numbers)
     numbers.print()
 
-    commandStorage.executeOperation(InsertBack(NUMBER1, numbers))
+    commandStorage.executeOperation(InsertBack(NUMBER1), numbers)
     numbers.print()
 
-    commandStorage.executeOperation(Rearrange(NUMBER0, NUMBER1, numbers))
+    commandStorage.executeOperation(Rearrange(NUMBER0, NUMBER1), numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
     numbers.print()
 
-    commandStorage.undoOperation()
+    commandStorage.undoOperation(numbers)
 }
