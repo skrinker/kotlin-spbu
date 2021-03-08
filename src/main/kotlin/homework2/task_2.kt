@@ -1,6 +1,7 @@
 package homework2
 
 import java.lang.Integer.parseInt
+import java.util.InputMismatchException
 
 fun getInputListOfNumbers(): MutableList<Int>? {
     println("Input numbers separated by a space")
@@ -15,7 +16,7 @@ fun getInputListOfNumbers(): MutableList<Int>? {
 }
 
 fun main() {
-    val numbers = getInputListOfNumbers() ?: throw Error("Numeric values were expected")
+    val numbers = getInputListOfNumbers() ?: throw InputMismatchException("Numeric values were expected")
     val uniqueNumbers = mutableListOf<Int>()
     numbers.asReversed().forEach {
         if (!uniqueNumbers.contains(it)) uniqueNumbers.add(it)
