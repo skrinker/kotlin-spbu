@@ -23,9 +23,8 @@ class Rearrange(private val to: Int, private val from: Int) : Action {
     private fun MutableList<Int>.containsIndex(index: Int): Boolean = (index >= 0 && index < this.size)
     private fun replace(to: Int, from: Int, numbers: MutableList<Int>) {
         if (numbers.containsIndex(to) && numbers.containsIndex(from)) {
-            val fromValue = numbers[from]
-            numbers[from] = numbers[to]
-            numbers[to] = fromValue
+            val temp = numbers.removeAt(from)
+            numbers.add(to, temp)
         }
     }
 
