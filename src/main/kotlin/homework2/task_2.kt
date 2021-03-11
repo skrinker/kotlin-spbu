@@ -15,11 +15,9 @@ fun getInputListOfNumbers(): MutableList<Int>? {
     return null
 }
 
+fun getRightOccurrences(numbers: MutableList<Int>) = numbers.asReversed().distinct().asReversed()
+
 fun main() {
     val numbers = getInputListOfNumbers() ?: throw InputMismatchException("Numeric values were expected")
-    val uniqueNumbers = mutableListOf<Int>()
-    numbers.asReversed().forEach {
-        if (!uniqueNumbers.contains(it)) uniqueNumbers.add(it)
-    }
-    uniqueNumbers.asReversed().forEach { number -> print("$number ") }
+    getRightOccurrences(numbers).forEach { number -> print("$number ") }
 }
