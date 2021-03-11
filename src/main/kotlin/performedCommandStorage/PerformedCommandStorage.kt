@@ -22,7 +22,6 @@ class PerformedCommandStorage {
             actions.pop()
         }
     }
-
     fun readFromJson(path: String, numbers: MutableList<Int>) {
         val input = File(path).readText(Charsets.UTF_8)
         Json.decodeFromString<List<Action>>(input).forEach { it.execute(numbers) }
