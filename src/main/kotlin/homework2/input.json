@@ -1,48 +1,28 @@
-{
-  "numberOfActions": 10,
-  "actions": [
-    {
-      "name": "InsertBack",
-      "value": 1
-    },
-    {
-      "name": "Push",
-      "value": 2
-    },
-    {
-      "name": "Rearrange",
-      "from": 0,
-      "to": 1
-    },
-    {
-      "name": "InsertBack",
-      "value": 3
-    },
-    {
-      "name": "Push",
-      "value": 0
-    },
-    {
-      "name": "InsertBack",
-      "value": 2
-    },
-    {
-      "name": "Push",
-      "value": 0
-    },
-    {
-      "name": "Rearrange",
-      "from": 2,
-      "to": 3
-    },
-    {
-      "name": "Rearrange",
-      "from": 4,
-      "to": 0
-    },
-    {
-      "name": "Push",
-      "value": 0
-    }
-  ]
-}
+[
+  {
+    "type": "performedCommandStorage.InsertBack",
+    "value": 0
+  },
+  {
+    "type": "performedCommandStorage.InsertBack",
+    "value": 1
+  },
+  {
+    "type": "performedCommandStorage.Push",
+    "value": 2
+  },
+  {
+    "type": "performedCommandStorage.Push",
+    "value": 1
+  },
+  {
+    "type": "performedCommandStorage.Rearrange",
+    "to": 0,
+    "from": 2
+  },
+  {
+    "type": "performedCommandStorage.Rearrange",
+    "to": 1,
+    "from": 2
+  }
+]
