@@ -14,6 +14,9 @@ class PerformedCommandStorage {
      * @param action Action on list of the numbers.
      * @param numbers List of the numbers.
      */
+class PerformedCommandStorage {
+    private var actions: Stack<Action> = Stack()
+
     fun executeOperation(action: Action, numbers: MutableList<Int>) {
         actions.add(action)
         action.execute(numbers)
