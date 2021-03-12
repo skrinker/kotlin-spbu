@@ -8,6 +8,7 @@ import performedCommandStorage.Rearrange
 const val NUMBER0 = 0
 const val NUMBER1 = 1
 const val NUMBER2 = 2
+const val PATH = "input.json"
 
 private fun MutableList<Int>.print() {
     if (this.isEmpty()) {
@@ -27,8 +28,8 @@ fun main() {
     commandStorage.executeOperation(Push(NUMBER1), numbers)
     commandStorage.executeOperation(Rearrange(0, 2), numbers)
     commandStorage.executeOperation(Rearrange(1, 2), numbers)
-    commandStorage.serialize("src/main/kotlin/homework2/output.json")
+    commandStorage.serialize("output.json")
     numbers.print()
-    commandStorage.readFromJson("src/main/kotlin/homework2/input.json", numbers)
+    commandStorage.readFromJson(PATH, numbers)
     numbers.print()
 }
