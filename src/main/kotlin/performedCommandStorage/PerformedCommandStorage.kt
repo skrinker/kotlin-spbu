@@ -3,13 +3,13 @@ package performedCommandStorage
 import java.util.Stack
 
 /**
- * This class can save actions, execute and undo them.
+ * Saves actions, execute and undo them.
  */
 class PerformedCommandStorage {
     private var actions: Stack<Action> = Stack()
 
     /**
-     * This function can execute and save actions.
+     * Executes and saves actions.
      *
      * @param action Action on list of the numbers.
      * @param numbers List of the numbers.
@@ -20,7 +20,7 @@ class PerformedCommandStorage {
     }
 
     /**
-     * This function can undo and remove actions.
+     * Undo and removes actions.
      *
      * @param numbers List of the numbers.
      */
