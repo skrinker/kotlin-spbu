@@ -17,7 +17,7 @@ private fun MutableList<Int>.print() {
 }
 
 fun main() {
-    val resources = "src/main/kotlin/resources/homework2"
+    val resources = "src/main/resources/homework2"
     val commandStorage = PerformedCommandStorage()
     val numbers = mutableListOf<Int>()
     commandStorage.executeOperation(InsertBack(0), numbers)
