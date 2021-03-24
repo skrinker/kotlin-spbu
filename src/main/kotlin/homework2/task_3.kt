@@ -5,10 +5,7 @@ import performedCommandStorage.PerformedCommandStorage
 import performedCommandStorage.Push
 import performedCommandStorage.Rearrange
 
-const val NUMBER0 = 0
-const val NUMBER1 = 1
-const val NUMBER2 = 2
-const val PATH = "input.json"
+@Suppress("MagicNumber")
 
 private fun MutableList<Int>.print() {
     if (this.isEmpty()) {
@@ -20,16 +17,17 @@ private fun MutableList<Int>.print() {
 }
 
 fun main() {
+    val resources = "src/main/kotlin/resources/homework2"
     val commandStorage = PerformedCommandStorage()
     val numbers = mutableListOf<Int>()
-    commandStorage.executeOperation(InsertBack(NUMBER0), numbers)
-    commandStorage.executeOperation(InsertBack(NUMBER1), numbers)
-    commandStorage.executeOperation(Push(NUMBER2), numbers)
-    commandStorage.executeOperation(Push(NUMBER1), numbers)
+    commandStorage.executeOperation(InsertBack(0), numbers)
+    commandStorage.executeOperation(InsertBack(1), numbers)
+    commandStorage.executeOperation(Push(2), numbers)
+    commandStorage.executeOperation(Push(1), numbers)
     commandStorage.executeOperation(Rearrange(0, 2), numbers)
     commandStorage.executeOperation(Rearrange(1, 2), numbers)
-    commandStorage.serialize("output.json")
+    commandStorage.serialize("$resources/output.json")
     numbers.print()
-    commandStorage.readFromJson(PATH, numbers)
+    commandStorage.readFromJson("$resources/input.json", numbers)
     numbers.print()
 }
