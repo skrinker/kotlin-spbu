@@ -1,4 +1,4 @@
-name: simple CI
+name: Kotlin CI
 
 on:
   push:
