@@ -1,22 +1,24 @@
 package performedCommandStorage
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 /**
- * Interface of action.
+ * Action.
  */
-interface Action {
+@Serializable
+sealed class Action {
     /**
      * Executes action.
      *
      * @param numbers List of the numbers.
      */
-    fun execute(numbers: MutableList<Int>)
-
+    abstract fun execute(numbers: MutableList<Int>)
     /**
      * Undo action.
      *
      * @param numbers List of the numbers.
      */
-    fun undo(numbers: MutableList<Int>)
+    abstract fun undo(numbers: MutableList<Int>)
 }
 
 /**
@@ -24,7 +26,9 @@ interface Action {
  *
  * @param value The value to be added at the end.
  */
-class InsertBack(private val value: Int) : Action {
+@Serializable
+@SerialName("InsertBack")
+class InsertBack(private val value: Int) : Action() {
     /**
      * Executes adding number at the end of the list.
      *
@@ -46,7 +50,9 @@ class InsertBack(private val value: Int) : Action {
  *
  * @param value The value to be added at the beginning.
  */
-class Push(private val value: Int) : Action {
+@Serializable
+@SerialName("Push")
+class Push(private val value: Int) : Action() {
     /**
      * Executes adding number at the beginning of the list.
      *
@@ -62,7 +68,13 @@ class Push(private val value: Int) : Action {
         numbers.removeFirst()
     }
 }
-class Rearrange(private val to: Int, private val from: Int) : Action {
+
+/**
+ * Changes element's position.
+ */
+@Serializable
+@SerialName("Rearrange")
+class Rearrange(private val to: Int, private val from: Int) : Action() {
     private fun MutableList<Int>.containsIndex(index: Int): Boolean = (index >= 0 && index < this.size)
     /**
      * Supports changing element position.
