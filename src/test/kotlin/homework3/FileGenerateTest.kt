@@ -21,7 +21,7 @@ internal class FileGenerateTest {
                 )
             ),
             Arguments.of(
-                "GeneratorTest1.kt",
+                "GeneratorTest2.kt",
                 Config(
                     "homework3",
                     "PerformedCommandStorage",
@@ -36,6 +36,6 @@ internal class FileGenerateTest {
     @ParameterizedTest(name = "test {index}, {1}")
     fun generateTest(expectedPath: String, config: Config) {
         val expectedTest = javaClass.getResource(expectedPath).readText()
-        assertEquals(expectedTest, FileGenerator(config).file)
+        assertEquals(expectedTest.replace("\r\n", "\n"), FileGenerator(config).file.toString())
     }
 }
