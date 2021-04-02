@@ -1,7 +1,0 @@
-package name: abc.def
-class name: UserClass
-functions:
-  - name: login
-  - name: updateInfo
-  - name: changeAvatar
-  - name: logout
