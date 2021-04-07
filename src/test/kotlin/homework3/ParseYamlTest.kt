@@ -19,7 +19,7 @@ internal class ParseYamlTest {
                         FunctionName("InsertBack")
                     )
                 ),
-                "src/test/resources/homework3/ConfigTest1.yaml"
+                "ConfigTest1.yaml"
             ),
             Arguments.of(
                 Config(
@@ -29,7 +29,7 @@ internal class ParseYamlTest {
                         FunctionName("Push")
                     )
                 ),
-                "src/test/resources/homework3/ConfigTest2.yaml"
+                "ConfigTest2.yaml"
             )
         )
     }
@@ -37,6 +37,6 @@ internal class ParseYamlTest {
     @MethodSource("inputData")
     @ParameterizedTest(name = "test {index}, {1}")
     fun parseYaml(expected: Config, inputPath: String) {
-        assertEquals(expected, parseYaml(inputPath))
+        assertEquals(expected, Config.parseYaml(javaClass.getResource(inputPath).path))
     }
 }
