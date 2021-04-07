@@ -14,9 +14,9 @@ import java.io.File
 
 @Serializable
 data class Config(
-    @SerialName("package name")  
+    @SerialName("package name")
     val packageName: String,
-    @SerialName("class name")  
+    @SerialName("class name")
     val className: String,
     val functions: List<FunctionName>
 ) {
