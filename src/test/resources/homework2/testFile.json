@@ -1,0 +1,1 @@
+[{"type":"InsertBack","value":0},{"type":"InsertBack","value":1},{"type":"Push","value":2},{"type":"Push","value":1},{"type":"Rearrange","to":0,"from":2},{"type":"Rearrange","to":1,"from":2}]
