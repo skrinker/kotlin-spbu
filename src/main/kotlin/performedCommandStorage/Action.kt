@@ -7,13 +7,13 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 sealed class Action {
-     /**
+    /**
      * Executes action.
      *
      * @param numbers List of the numbers.
      */
     abstract fun execute(numbers: MutableList<Int>)
-  /**
+    /**
      * Undo action.
      *
      * @param numbers List of the numbers.

@@ -2,8 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.31"
-    kotlin("plugin.serialization") version "1.4.31"
+    kotlin("jvm") version "1.4.30"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     id("org.jetbrains.dokka") version "1.4.20"
     application
@@ -18,6 +17,9 @@ repositories {
 }
 
 dependencies {
+    implementation("junit:junit:4.12")
+    testImplementation(kotlin("test-junit"))
+    testImplementation(platform("org.junit:junit-bom:5.7.1"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("com.charleskorn.kaml:kaml:0.28.3")
     implementation("com.squareup:kotlinpoet:1.6.0")

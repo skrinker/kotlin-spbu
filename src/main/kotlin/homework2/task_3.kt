@@ -26,7 +26,7 @@ fun main() {
     commandStorage.executeOperation(Push(1), numbers)
     commandStorage.executeOperation(Rearrange(0, 2), numbers)
     commandStorage.executeOperation(Rearrange(1, 2), numbers)
-    commandStorage.serialize("$resources/output.json")
+    commandStorage.serialize("$resources/output.json", true)
     numbers.print()
     commandStorage.readFromJson("$resources/input.json", numbers)
     numbers.print()

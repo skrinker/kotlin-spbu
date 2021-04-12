@@ -41,8 +41,8 @@ class PerformedCommandStorage {
         Json.decodeFromString<List<Action>>(input).forEach { it.execute(numbers) }
     }
 
-    fun serialize(path: String) {
+    fun serialize(path: String, pretty: Boolean) {
         val file = File(path)
-        file.writeText(Json { prettyPrint = true }.encodeToString(actions.toList()))
+        file.writeText(Json { prettyPrint = pretty }.encodeToString(actions.toList()))
     }
 }
