@@ -8,7 +8,7 @@ interface Calculatetable {
     fun calculate(): Int
 }
 
-class ParseOperandNode() {
+class ParseOperandNode {
     private fun isCharSign(sign: String): Boolean = sign.matches(Regex("[+\\-*/]")) && (sign.length == 1)
     fun parse(inputList: MutableList<String>): OperandNode {
         val temp = inputList.removeFirst()
