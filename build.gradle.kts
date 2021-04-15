@@ -1,3 +1,4 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
@@ -12,6 +13,7 @@ group = "me.user"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    mavenCentral()
     jcenter()
 }
 
@@ -19,6 +21,9 @@ dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     testImplementation(kotlin("test-junit"))
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
+    implementation("com.charleskorn.kaml:kaml:0.28.3")
+    implementation("com.squareup:kotlinpoet:1.6.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.7.1")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.15.0")
 }
 
@@ -29,7 +34,17 @@ detekt {
 }
 
 tasks.test {
-    useJUnit()
+    useJUnitPlatform()
+
+    testLogging {
+        events(
+            TestLogEvent.STANDARD_ERROR,
+            TestLogEvent.STARTED,
+            TestLogEvent.PASSED,
+            TestLogEvent.FAILED,
+            TestLogEvent.SKIPPED
+        )
+    }
 }
 
 tasks.withType<KotlinCompile>() {
