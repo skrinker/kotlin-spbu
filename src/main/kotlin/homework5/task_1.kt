@@ -15,5 +15,7 @@ fun getUserInput(): String {
 
 fun main() {
     val input = getUserInput()
-    println("Result: " + ParseOperandNode().parse(convertInput(input)).calculate())
+    val expressionRoot = ParseOperandNode().parse(convertInput(input), 0)
+    println("Result: " + expressionRoot.calculate())
+    println(expressionRoot.toString())
 }

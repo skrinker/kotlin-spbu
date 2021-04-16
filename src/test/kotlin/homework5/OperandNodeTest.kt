@@ -3,8 +3,6 @@ package homework5
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
 import kotlin.test.assertEquals
 
 internal class OperandNodeTest {
@@ -13,44 +11,40 @@ internal class OperandNodeTest {
         fun inputDataCalculate(): List<Arguments> = listOf(
             Arguments.of(
                 OperandNode(
-                    "+", -1,
-                    OperandNode(null, 200, null, null),
-                    OperandNode(null, 3, null, null)
+                    "+", 0,
+                    OperatorNode(200, 1),
+                    OperatorNode(3, 1),
                 ),
                 203
             ),
-            Arguments.of(OperandNode(null, -10, null, null), -10)
+            Arguments.of(OperatorNode(-10, 0), -10)
         )
 
         @JvmStatic
         fun inputDataPrint(): List<Arguments> = listOf(
             Arguments.of(
                 OperandNode(
-                    "+", -1,
-                    OperandNode(null, 200, null, null),
-                    OperandNode(null, 3, null, null)
+                    "+", 0,
+                    OperatorNode(200, 1),
+                    OperatorNode(3, 1),
                 ),
-                "+\r\n" +
-                    "....200\r\n" +
-                    "....3\r\n"
+                "+\n" +
+                    "....200\n" +
+                    "....3\n"
             ),
-            Arguments.of(OperandNode(null, -10, null, null), "-10\r\n")
+            Arguments.of(OperatorNode(-10, 0), "-10")
         )
     }
 
     @MethodSource("inputDataCalculate")
     @ParameterizedTest(name = "test")
-    fun calculateTest(operandNode: OperandNode, value: Int) {
+    fun calculateTest(operandNode: Node, value: Int) {
         assertEquals(value, operandNode.calculate())
     }
 
     @MethodSource("inputDataPrint")
     @ParameterizedTest(name = "test")
-    fun print(operandNode: OperandNode, output: String) {
-        val outputStream = ByteArrayOutputStream()
-        System.setOut(PrintStream(outputStream))
-        operandNode.print(0)
-        assertEquals(output, outputStream.toString())
-        System.setOut(null)
+    fun print(operandNode: Node, output: String) {
+        assertEquals(output, operandNode.toString())
     }
 }

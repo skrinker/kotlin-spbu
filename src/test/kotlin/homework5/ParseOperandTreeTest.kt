@@ -9,13 +9,13 @@ internal class ParseOperandTreeTest {
     companion object {
         @JvmStatic
         fun inputData(): List<Arguments> = listOf(
-            Arguments.of(mutableListOf("+", "200", "3"), OperandNode("+", -1, OperandNode(null, 200, null, null), OperandNode(null, 3, null, null))),
-            Arguments.of(mutableListOf("-10"), OperandNode(null, -10, null, null))
+            Arguments.of(mutableListOf("+", "200", "3"), OperandNode("+", 0, OperatorNode(200, 1), OperatorNode(3, 1))),
+            Arguments.of(mutableListOf("/", "200", "10"), OperandNode("/", 0, OperatorNode(200, 1), OperatorNode(10, 1)))
         )
     }
     @MethodSource("inputData")
     @ParameterizedTest(name = "test")
     fun parseListToOperandTest(list: MutableList<String>, expectedOperand: OperandNode) {
-        assertEquals(expectedOperand.calculate(), ParseOperandNode().parse(list).calculate())
+        assertEquals(expectedOperand.calculate(), ParseOperandNode().parse(list, 0).calculate())
     }
 }
