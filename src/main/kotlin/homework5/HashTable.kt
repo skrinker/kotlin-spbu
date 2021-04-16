@@ -47,19 +47,19 @@ class HashTable<K, V>(private var hashFunction: HashFunction<K>) {
         buckets = newBuckets
     }
 
-    operator fun get(key: K): V? {
+    operator fun get(key: K): HashElement<K, V>? {
         val hash = hashFunction.hash(key) % bucketCount
-        return buckets[hash].find { key == it.key }?.value
+        return buckets[hash].find { key == it.key }
     }
 
-    fun remove(key: K): Boolean {
+    fun remove(key: K): HashElement<K, V>? {
         val hash = hashFunction.hash(key) % (bucketCount)
         val element = buckets[hash].find { key == it.key }
         if (element != null) {
             buckets[hash].remove(element)
             --size
         }
-        return element != null
+        return element
     }
 
     fun contains(key: K): Boolean {
@@ -72,19 +72,17 @@ class HashTable<K, V>(private var hashFunction: HashFunction<K>) {
         recreateHashTable()
     }
 
-    override fun toString(): String {
+    fun getStatistics(): String {
         var numberOfConflicts = 0
         var maximumBucketLength = 0
         buckets.forEach {
-            if (it.size > 1)
-                ++numberOfConflicts
-            if (it.size > maximumBucketLength)
-                maximumBucketLength = it.size
+            if (it.size > 1) numberOfConflicts++
+            if (it.size > maximumBucketLength) maximumBucketLength = it.size
         }
         return "Size: " + this.size + "\n" +
             "Buckets: " + this.bucketCount + "\n" +
             "Load factor: " + this.loadFactor + "\n" +
-            "Conflicts number" + numberOfConflicts + "\n" +
-            "Maximum bucket size" + maximumBucketLength + "\n"
+            "Conflicts number: " + numberOfConflicts.toString() + "\n" +
+            "Maximum bucket size: " + maximumBucketLength.toString() + "\n"
     }
 }

@@ -4,7 +4,8 @@ interface HashFunction<K> {
     fun hash(input: K): Int
 }
 
-class SimpleHash(private val border: Int) : HashFunction<String> {
+object SimpleHash : HashFunction<String> {
+		private val border: Int = Int.MAX_VALUE
     override fun hash(input: String): Int {
         var result = 0
         input.forEach { result += (it - 'a') % border }
@@ -12,6 +13,6 @@ class SimpleHash(private val border: Int) : HashFunction<String> {
     }
 }
 
-class DefaultHash : HashFunction<String> {
+object DefaultHash : HashFunction<String> {
     override fun hash(input: String): Int = input.hashCode()
 }
