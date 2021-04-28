@@ -8,7 +8,7 @@ fun getSuggestion(action: Action<String, String>, index: Int) {
 }
 
 fun printInstruction(actions: List<Action<String, String>>) {
-    actions.forEachIndexed() { index, value -> getSuggestion(value, index) }
+    actions.forEachIndexed { index, value -> getSuggestion(value, index) }
 }
 
 fun getUserInput(suggestion: String): String {
@@ -22,8 +22,8 @@ fun main() {
     println("or -1 to exit")
     val hashTable = HashTable<String, String>(DefaultHash)
     while (true) {
-		    var number = getUserInput("number of action").toInt()
-		    if (number != -1) actions[number].execute(hashTable)
-		    else break
+        val number = getUserInput("number of action").toInt()
+        if (number != -1) actions[number].execute(hashTable)
+        else break
     }
 }
