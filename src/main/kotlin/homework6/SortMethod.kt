@@ -15,7 +15,6 @@ object MergeSort : SortMethod {
 
     private fun IntArray.mergeSortParallel(lowerBound: Int, upperBound: Int, threads: Int) {
         if (lowerBound + 1 >= upperBound) return
-        if (threads == 1) mergeSort(lowerBound, upperBound)
         val mid = (lowerBound + upperBound) / 2
 
         val lowerThread = Thread { this.mergeSortParallel(lowerBound, mid, threads / 2) }
@@ -25,35 +24,21 @@ object MergeSort : SortMethod {
         lowerThread.join()
         upperThread.join()
 
-        this.mergeArraysParallel(lowerBound, upperBound, mid, threads - 2)
-    }
-
-    private fun IntArray.mergeSort(lowerBound: Int, upperBound: Int) {
-        if (lowerBound + 1 >= upperBound) return
-        val mid = (lowerBound + upperBound) / 2
-        this.mergeSort(lowerBound, mid)
-        this.mergeSort(mid, upperBound)
-
-        this.mergeArrays(lowerBound, upperBound, mid)
+        this.mergeArraysParallel(lowerBound, upperBound, mid)
     }
 
     private fun IntArray.binarySearch(target: Int): Int {
         var right = this.size
         var left = 0
-        var mid = (left + right) / 2
         while (left < right) {
+            val mid = (left + right) / 2
             if (this[mid] < target) left = mid + 1
             else right = mid
-            mid = (left + right) / 2
         }
-        return mid
+        return right
     }
 
-    private fun IntArray.mergeArraysParallel(left: Int, right: Int, mid: Int, threads: Int) {
-        if (threads <= 1) {
-            mergeArrays(left, right, mid)
-            return
-        }
+    private fun IntArray.mergeArraysParallel(left: Int, right: Int, mid: Int) {
         val rightArray = this.copyOfRange(mid, right)
         val leftArray = this.copyOfRange(left, mid)
         val result = IntArray(right - left) { 0 }
@@ -74,39 +59,8 @@ object MergeSort : SortMethod {
             this[left + i] = result[i]
     }
 
-    private fun IntArray.mergeArrays(left: Int, right: Int, mid: Int) {
-        var first = 0
-        var second = 0
-        val result = IntArray(right - left) { 0 }
-
-        while (left + first < mid && mid + second < right) {
-            if (this[left + first] < this[mid + second]) {
-                result[first + second] = this[left + second]
-                ++first
-            } else {
-                result[first + second] = this[mid + second]
-                ++first
-            }
-        }
-
-        while (left + first < mid) {
-            result[first + second] = this[left + first]
-            ++first
-        }
-
-        while (mid + second < right) {
-            result[first + second] = this[mid + second]
-            ++second
-        }
-
-        for (i in 0 until right - left) {
-            this[left + i] = result[i]
-        }
-    }
-
-    override fun sort(array: IntArray, numberOfThreads: Int) {
-        array.mergeSortParallel(0, array.size, 20)
-    }
+    override fun sort(array: IntArray, numberOfThreads: Int) =
+        array.mergeSortParallel(0, array.size, numberOfThreads)
 }
 
 fun getMethodsList(): List<SortMethod> = mutableListOf<SortMethod>(DefaultSort, MergeSort)
