@@ -19,7 +19,7 @@ repositories {
 }
 
 javafx {
-		version = "15.0.1"
+		version = "11.0.2"
 }
 
 dependencies {
@@ -54,7 +54,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         freeCompilerArgs = listOf("-Werror")
     }
 }
