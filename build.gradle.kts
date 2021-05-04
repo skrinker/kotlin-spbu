@@ -6,6 +6,7 @@ plugins {
     kotlin("plugin.serialization") version "1.4.31"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     id("org.jetbrains.dokka") version "1.4.20"
+		id("org.openjfx.javafxplugin") version "0.0.9"
     application
 }
 
@@ -15,6 +16,10 @@ version = "1.1"
 repositories {
     mavenCentral()
     jcenter()
+}
+
+javafx {
+		version = "15.0.1"
 }
 
 dependencies {
@@ -49,7 +54,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         freeCompilerArgs = listOf("-Werror")
     }
 }
