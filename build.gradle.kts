@@ -6,7 +6,6 @@ plugins {
     kotlin("plugin.serialization") version "1.4.31"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     id("org.jetbrains.dokka") version "1.4.20"
-		id("org.openjfx.javafxplugin") version "0.0.9"
     application
 }
 
@@ -18,9 +17,6 @@ repositories {
     jcenter()
 }
 
-javafx {
-		version = "11.0.2"
-}
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
@@ -54,7 +50,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "1.8"
         freeCompilerArgs = listOf("-Werror")
     }
 }
