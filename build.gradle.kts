@@ -36,7 +36,6 @@ detekt {
 
 tasks.test {
     useJUnitPlatform()
-
     testLogging {
         events(
             TestLogEvent.STANDARD_ERROR,
