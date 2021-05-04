@@ -17,12 +17,15 @@ repositories {
     jcenter()
 }
 
-
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
     implementation("no.tornado:tornadofx:1.7.20")
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     testImplementation(kotlin("test-junit"))
+    implementation("no.tornado:tornadofx:1.7.20")
+    implementation("org.openjfx:javafx-base:11.0.2")
+    implementation("org.openjfx:javafx:11.0.2")
+    implementation("org.openjfx:javafx-controls:11.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("com.charleskorn.kaml:kaml:0.28.3")
     implementation("com.squareup:kotlinpoet:1.6.0")
@@ -33,6 +36,11 @@ detekt {
     failFast = true // fail build on any finding
     config = files("./config/detekt/detekt.yml")
     buildUponDefaultConfig = true
+}
+
+javafx {
+		version = "11"
+		modules("javafx.controls")
 }
 
 tasks.test {
@@ -50,7 +58,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         freeCompilerArgs = listOf("-Werror")
     }
 }
