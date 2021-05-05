@@ -24,7 +24,7 @@ internal class MergeSortTest {
     @MethodSource("inputData")
     @ParameterizedTest(name = "test {index}, {1}")
     fun mergeSort(inputArray: IntArray, outputArray: IntArray) {
-        MergeSort.sort(inputArray, 3)
+        MergeSort(10).sort(inputArray)
         assertEquals(outputArray.toList(), inputArray.toList())
     }
 }

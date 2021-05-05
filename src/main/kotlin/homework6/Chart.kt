@@ -62,12 +62,11 @@ class InputView : View() {
 class ChartView : View() {
     override val root = vbox {
         linechart("Multi-threaded merge sort algorithm", NumberAxis(), NumberAxis()) {
-            getMethodsList().forEach {
+            getMethodsList(10, 20).forEach {
                 series(it.name) {
                     Statistics(it).getStatistics(
                         inputData.arraySize.value,
                         inputData.offset.value,
-                        inputData.averageStep.value,
                         inputData.averageStep.value
                     ).forEach { data(it.first, it.second) }
                 }

@@ -1,26 +1,27 @@
 package homework6
 
+import kotlin.math.pow
+
 interface SortMethod {
     val name: String
-    fun sort(array: IntArray, numberOfThreads: Int)
+    fun sort(array: IntArray)
 }
 
-object DefaultSort : SortMethod {
+class DefaultSort : SortMethod {
     override val name: String = "Default Kotlin sort"
-    override fun sort(array: IntArray, numberOfThreads: Int) = array.sort()
+    override fun sort(array: IntArray) = array.sort()
 }
 
-object MergeSort : SortMethod {
+class MergeSort(private val numberOfThreads: Int) : SortMethod {
     override val name: String = "Merge sort"
-
     private fun IntArray.mergeSortParallel(lowerBound: Int, upperBound: Int, threads: Int) {
         if (lowerBound + 1 >= upperBound) return
         val mid = (lowerBound + upperBound) / 2
 
         val lowerThread = Thread { this.mergeSortParallel(lowerBound, mid, threads / 2) }
         val upperThread = Thread { this.mergeSortParallel(mid, upperBound, threads - threads / 2) }
-        lowerThread.run()
-        upperThread.run()
+        lowerThread.start()
+        upperThread.start()
         lowerThread.join()
         upperThread.join()
 
@@ -50,8 +51,8 @@ object MergeSort : SortMethod {
             for (i in 0 until right - mid)
                 result[i + leftArray.binarySearch(rightArray[i])] = rightArray[i]
         }
-        lowerThread.run()
-        upperThread.run()
+        lowerThread.start()
+        upperThread.start()
         lowerThread.join()
         upperThread.join()
 
@@ -59,8 +60,14 @@ object MergeSort : SortMethod {
             this[left + i] = result[i]
     }
 
-    override fun sort(array: IntArray, numberOfThreads: Int) =
+    override fun sort(array: IntArray) =
         array.mergeSortParallel(0, array.size, numberOfThreads)
 }
 
-fun getMethodsList(): List<SortMethod> = mutableListOf<SortMethod>(DefaultSort, MergeSort)
+fun getMethodsList(lowerBound: Int, upperBound: Int): List<SortMethod> {
+    val methodsList = mutableListOf<SortMethod>(DefaultSort())
+    for (degreeSize in lowerBound..upperBound) {
+        methodsList.add(MergeSort(2.0.pow(degreeSize).toInt()))
+    }
+    return methodsList
+}
