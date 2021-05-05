@@ -17,6 +17,14 @@ internal class MergeSortTest {
             Arguments.of(
                 intArrayOf(5, 2, 3, 1, 0),
                 intArrayOf(0, 1, 2, 3, 5)
+            ),
+            Arguments.of(
+                intArrayOf(),
+                intArrayOf()
+            ),
+            Arguments.of(
+                intArrayOf(5, 2, 3, 1, 0, 4, 10, 6, 9, 7, 8),
+                intArrayOf(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
             )
         )
     }
@@ -24,7 +32,9 @@ internal class MergeSortTest {
     @MethodSource("inputData")
     @ParameterizedTest(name = "test {index}, {1}")
     fun mergeSort(inputArray: IntArray, outputArray: IntArray) {
-        MergeSort(10).sort(inputArray)
-        assertEquals(outputArray.toList(), inputArray.toList())
+        for (threads in 1..64) {
+            MergeSort(threads).sort(inputArray)
+            assertEquals(outputArray.toList(), inputArray.toList())
+        }
     }
 }

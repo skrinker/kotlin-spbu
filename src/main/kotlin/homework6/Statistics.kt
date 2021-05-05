@@ -5,12 +5,12 @@ import kotlin.random.Random
 class Statistics(private val sortMethod: SortMethod) {
     fun getStatistics(
         maxArraySize: Int,
-        offset: Int,
-        numberOfSteps: Int
+        stepSize: Int,
+        stepAverage: Int
     ): MutableList<Pair<Int, Long>> {
         val result = mutableListOf<Pair<Int, Long>>()
-        for (size in 0 until maxArraySize step offset)
-            result.add(Pair(size, getAverageResult(size, numberOfSteps)))
+        for (size in 0 until maxArraySize step stepSize)
+            result.add(Pair(size, getAverageResult(size, stepAverage)))
         return result
     }
 
@@ -25,7 +25,7 @@ class Statistics(private val sortMethod: SortMethod) {
 
     private fun getAverageResult(arraySize: Int, numberOfSteps: Int): Long {
         val listOfResults = mutableListOf<Long>()
-        for (step in 1..numberOfSteps) {
+        repeat(numberOfSteps) {
             val runningTime = calculateRunningTime(createRandomArray(arraySize))
             listOfResults.add(runningTime)
         }
