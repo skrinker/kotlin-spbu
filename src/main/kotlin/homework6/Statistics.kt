@@ -3,14 +3,15 @@ package homework6
 import kotlin.random.Random
 
 class Statistics(private val sortMethod: SortMethod) {
+    data class ChartValue(val size: Int, val averageTime: Long)
     fun getStatistics(
         maxArraySize: Int,
         stepSize: Int,
         stepAverage: Int
-    ): MutableList<Pair<Int, Long>> {
-        val result = mutableListOf<Pair<Int, Long>>()
+    ): MutableList<ChartValue> {
+        val result = mutableListOf<ChartValue>()
         for (size in 0 until maxArraySize step stepSize)
-            result.add(Pair(size, getAverageResult(size, stepAverage)))
+            result.add(ChartValue(size, getAverageResult(size, stepAverage)))
         return result
     }
 

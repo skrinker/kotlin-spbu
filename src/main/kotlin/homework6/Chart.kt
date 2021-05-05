@@ -74,7 +74,7 @@ class ChartView : View() {
                         inputData.arraySize.value,
                         inputData.stepSize.value,
                         inputData.averageStep.value
-                    ).forEach { data(it.first, it.second) }
+                    ).forEach { data(it.size, it.averageTime) }
                 }
             }
         }
