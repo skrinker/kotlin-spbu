@@ -19,10 +19,17 @@ repositories {
 
 dependencies {
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
+    implementation("io.ktor:ktor-websockets:1.5.4")
+    implementation("io.ktor:ktor-server-core:1.5.4")
+    implementation("io.ktor:ktor-server-netty:1.5.4")
+    implementation("io.ktor:ktor-serialization:1.5.4")
+    implementation("io.ktor:ktor-client-cio:1.5.4")
     testImplementation(kotlin("test-junit"))
+    implementation("io.ktor:ktor-client-websockets:1.5.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0")
     implementation("com.charleskorn.kaml:kaml:0.28.3")
     implementation("com.squareup:kotlinpoet:1.6.0")
+    implementation("org.slf4j:slf4j-log4j12:1.7.29")
     detektPlugins("io.gitlab.arturbosch.detekt:detekt-formatting:1.15.0")
 }
 
