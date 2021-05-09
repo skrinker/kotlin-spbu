@@ -6,11 +6,12 @@ plugins {
     kotlin("plugin.serialization") version "1.4.31"
     id("io.gitlab.arturbosch.detekt") version "1.15.0"
     id("org.jetbrains.dokka") version "1.4.20"
+    id("org.openjfx.javafxplugin") version "0.0.9"
     application
 }
 
 group = "me.user"
-version = "1.0-SNAPSHOT"
+version = "1.1"
 
 repositories {
     mavenCentral()
@@ -18,6 +19,13 @@ repositories {
 }
 
 dependencies {
+    implementation("com.squareup.okhttp3:okhttp:3.14.6")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
+    implementation("no.tornado:tornadofx:1.7.20")
+    implementation("no.tornado:tornadofx:1.7.20")
+    implementation("org.openjfx:javafx-base:11.0.2")
+    implementation("org.openjfx:javafx:11.0.2")
+    implementation("org.openjfx:javafx-controls:11.0.2")
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     implementation("io.ktor:ktor-websockets:1.5.4")
     implementation("io.ktor:ktor-server-core:1.5.4")
@@ -39,6 +47,11 @@ detekt {
     buildUponDefaultConfig = true
 }
 
+javafx {
+    version = "11"
+    modules("javafx.controls")
+}
+
 tasks.test {
     useJUnitPlatform()
 
@@ -55,7 +68,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile>() {
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
         freeCompilerArgs = listOf("-Werror")
     }
 }
