@@ -62,6 +62,8 @@ package homework8.client
 import homework8.CellValue
 import homework8.PlayerInformation
 import javafx.application.Application
+import javafx.application.Platform
+import javafx.collections.FXCollections
 import javafx.scene.control.Button
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Pane
@@ -78,9 +80,11 @@ import tornadofx.ItemFragment
 import tornadofx.View
 import tornadofx.button
 import tornadofx.circle
+import tornadofx.clear
 import tornadofx.gridpane
 import tornadofx.group
 import tornadofx.line
+import tornadofx.onChange
 import tornadofx.opcr
 import tornadofx.row
 
@@ -102,6 +106,7 @@ fun Array<CellValue>.print() {
 
 private var webSocket: WebSocket = connect()
 private var playerInformation = PlayerInformation()
+private val board = FXCollections.observableArrayList<CellValue>()
 
 fun connect(): WebSocket = runBlocking {
     val client = OkHttpClient.Builder().build()
@@ -114,14 +119,21 @@ fun main(args: Array<String>) {
     Application.launch(TicTacToe::class.java, *args)
 }
 
+private fun updateBoard(newBoard: Array<CellValue>) {
+    board.removeAll()
+    for (i in newBoard.indices) {
+        Platform.runLater { board.add(newBoard[i]) }
+    }
+}
+
 private class EchoWebSocketListener : WebSocketListener() {
     override fun onOpen(webSocket: WebSocket, response: Response) {
         println("Connected")
     }
 
     override fun onMessage(webSocket: WebSocket?, text: String) {
-        println(text)
         playerInformation = Json.decodeFromString(PlayerInformation.serializer(), text)
+        Platform.runLater { updateBoard(playerInformation.gameInformation.board) }
     }
 
     override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
@@ -145,10 +157,15 @@ class TicTacToeGrid : View("Tic Tac Toe") {
             }
         }
     }
+
     override val root =
         gridpane {
             style = "-fx-background-color: #ffffff"
             printBoard(playerInformation.gameInformation.board)
+            board.onChange {
+                clear()
+                printBoard(playerInformation.gameInformation.board)
+            }
         }
 
     private fun Pane.empty(op: (Button.() -> Unit)) =
@@ -187,11 +204,10 @@ class Empty : ItemFragment<CellValue>() {
         style = "-fx-background-color: #ffffff; -fx-border-color:black; -fx-border-width: 1 0 0 1;"
         setOnMouseClicked {
             if (playerInformation.gameInformation.currentMoveId == playerInformation.playerId) {
-                println("${it.sceneY}, ${it.sceneX}")
                 val x = (it.sceneX.toInt() - 1) / 200
                 val y = (it.sceneY.toInt() - 1) / 200
-                playerInformation.gameInformation.board[x * 3 + y] = playerInformation.playerType
-                playerInformation.gameInformation.board.print()
+                playerInformation.gameInformation.board[y * 3 + x] = playerInformation.playerType
+                updateBoard(playerInformation.gameInformation.board)
                 controller.sendPlayerInformation(playerInformation, webSocket)
             }
         }
