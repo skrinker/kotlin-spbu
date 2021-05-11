@@ -1,66 +1,7 @@
 package homework8.client
 
-// import io.ktor.client.HttpClient
-// import io.ktor.client.features.websocket.ClientWebSocketSession
-// import io.ktor.client.features.websocket.DefaultClientWebSocketSession
-// import io.ktor.client.features.websocket.WebSockets
-// import io.ktor.client.features.websocket.webSocketSession
-// import io.ktor.client.features.websocket.wss
-// import io.ktor.http.HttpMethod
-// import io.ktor.http.cio.websocket.ExperimentalWebSocketExtensionApi
-// import io.ktor.http.cio.websocket.WebSocketSession
-//
-// fun Array<CellValue>.print() {
-//    var result = StringBuilder()
-//    for (i in this.indices) {
-//        var temp = when (this[i]) {
-//            CellValue.Circle -> "O"
-//            CellValue.Cross -> "X"
-//            CellValue.Empty -> " "
-//        }
-//        result.append(temp)
-//        if ((i + 1) % 3 == 0) {
-//            result.append("\n")
-//        }
-//    }
-//    print(result)
-// }
-//
-// fun main() {
-//    val client = HttpClient {
-//        install(WebSockets)
-//    }
-//
-//    runBlocking {
-//        client.webSocket(method = HttpMethod.Get, host = "127.0.0.1", port = 8000) {
-//            while (true) {
-//                val msg = incoming.receive() as? Frame.Text ?: continue
-//                var playerInformation = Json.decodeFromString(PlayerInformation.serializer(), msg.readText())
-//                if (playerInformation.gameInformation.isStarted) {
-//                    var board = playerInformation.gameInformation.board
-//                    if (playerInformation.playerId == playerInformation.gameInformation.currentMoveId) {
-//                        board.print()
-//                        println("Your move")
-//                        var move = readLine()
-//                        board[move!!.toInt()] = playerInformation.playerType
-//                        board.print()
-//                        playerInformation.gameInformation.board = board
-//                        outgoing.send(
-//                            Frame.Text(
-//                                Json.encodeToJsonElement(PlayerInformation.serializer(), playerInformation)
-//                                    .toString()
-//                            )
-//                        )
-//                    }
-//                }
-//            }
-//        }
-//    }
-//    client.close()
-// }
-
 import homework8.CellValue
-import homework8.PlayerInformation
+import homework8.GameState
 import javafx.application.Application
 import javafx.application.Platform
 import javafx.collections.FXCollections
@@ -68,13 +9,6 @@ import javafx.scene.control.Button
 import javafx.scene.layout.GridPane
 import javafx.scene.layout.Pane
 import javafx.scene.paint.Color
-import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.json.Json
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.WebSocket
-import okhttp3.WebSocketListener
 import tornadofx.App
 import tornadofx.ItemFragment
 import tornadofx.View
@@ -83,67 +17,44 @@ import tornadofx.circle
 import tornadofx.clear
 import tornadofx.gridpane
 import tornadofx.group
+import tornadofx.label
 import tornadofx.line
 import tornadofx.onChange
 import tornadofx.opcr
 import tornadofx.row
+import tornadofx.vbox
 
-fun Array<CellValue>.print() {
-    val result = StringBuilder()
-    for (i in this.indices) {
-        val temp = when (this[i]) {
-            CellValue.Circle -> "O"
-            CellValue.Cross -> "X"
-            CellValue.Empty -> " "
-        }
-        result.append(temp)
-        if ((i + 1) % 3 == 0) {
-            result.append("\n")
-        }
-    }
-    print(result)
-}
-
-private var webSocket: WebSocket = connect()
-private var playerInformation = PlayerInformation()
 private val board = FXCollections.observableArrayList<CellValue>()
-
-fun connect(): WebSocket = runBlocking {
-    val client = OkHttpClient.Builder().build()
-    val request = Request.Builder().url("ws://localhost:8000/").build()
-    val webSocketListener = EchoWebSocketListener()
-    return@runBlocking client.newWebSocket(request, webSocketListener)
-}
+private val gameState = FXCollections.observableArrayList<GameState>()
 
 fun main(args: Array<String>) {
     Application.launch(TicTacToe::class.java, *args)
 }
 
-private fun updateBoard(newBoard: Array<CellValue>) {
+fun updateBoard(newBoard: Array<CellValue>) {
     board.removeAll()
     for (i in newBoard.indices) {
         Platform.runLater { board.add(newBoard[i]) }
     }
 }
 
-private class EchoWebSocketListener : WebSocketListener() {
-    override fun onOpen(webSocket: WebSocket, response: Response) {
-        println("Connected")
-    }
-
-    override fun onMessage(webSocket: WebSocket?, text: String) {
-        playerInformation = Json.decodeFromString(PlayerInformation.serializer(), text)
-        Platform.runLater { updateBoard(playerInformation.gameInformation.board) }
-    }
-
-    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        webSocket.close(100, null)
-    }
+fun updateGameState(newGameState: GameState) {
+    gameState.removeAll()
+    gameState.add(newGameState)
 }
 
 class TicTacToe : App(TicTacToeGrid::class)
 
-class TicTacToeGrid : View("Tic Tac Toe") {
+class StatusWindow : View("Status window") {
+    private val windowController = WindowController()
+    override val root = vbox {
+        gameState.onChange {
+            label(windowController.getStatusText())
+        }
+    }
+}
+
+class TicTacToeGrid : View("Tic-Tac-Toe") {
     private fun GridPane.printBoard(board: Array<CellValue>) {
         for (i in 0..2) {
             row {
@@ -158,8 +69,12 @@ class TicTacToeGrid : View("Tic Tac Toe") {
         }
     }
 
-    override val root =
+    private val controller = WindowController()
+
+    override val root = vbox {
         gridpane {
+            prefWidth = 600.0
+            prefHeight = 600.0
             style = "-fx-background-color: #ffffff"
             printBoard(playerInformation.gameInformation.board)
             board.onChange {
@@ -167,6 +82,7 @@ class TicTacToeGrid : View("Tic Tac Toe") {
                 printBoard(playerInformation.gameInformation.board)
             }
         }
+    }
 
     private fun Pane.empty(op: (Button.() -> Unit)) =
         opcr(this, tornadofx.find(Empty::class).root, op)
@@ -197,19 +113,13 @@ class Circle : ItemFragment<CellValue>() {
 }
 
 class Empty : ItemFragment<CellValue>() {
-    val controller = GameController()
+    private val playerController = PLayerController()
     override val root = button {
         prefWidth = 200.0
         prefHeight = 200.0
         style = "-fx-background-color: #ffffff; -fx-border-color:black; -fx-border-width: 1 0 0 1;"
         setOnMouseClicked {
-            if (playerInformation.gameInformation.currentMoveId == playerInformation.playerId) {
-                val x = (it.sceneX.toInt() - 1) / 200
-                val y = (it.sceneY.toInt() - 1) / 200
-                playerInformation.gameInformation.board[y * 3 + x] = playerInformation.playerType
-                updateBoard(playerInformation.gameInformation.board)
-                controller.sendPlayerInformation(playerInformation, webSocket)
-            }
+            playerController.registerMove(it)
         }
     }
 }

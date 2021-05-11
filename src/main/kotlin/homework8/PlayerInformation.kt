@@ -2,6 +2,8 @@ package homework8
 
 import kotlinx.serialization.Serializable
 
+const val DEFAULT_VALUE = -2
+
 @Serializable
 data class PlayerInformation(
     var playerId: Int = -1,
@@ -16,9 +18,14 @@ enum class CellValue {
 
 @Serializable
 data class GameInformation(
-    val isStarted: Boolean = false,
-    var currentMoveId: Int = -2,
+    var gameState: GameState = GameState.LOADING,
+    var currentMoveId: Int = DEFAULT_VALUE,
+    var isDraw: Boolean = false,
     var board: Array<CellValue> = Array(9) { CellValue.Empty },
-    val winnerId: Int = -2,
-    val draw: Boolean = false
+    var winnerId: Int = DEFAULT_VALUE,
 )
+
+@Serializable
+enum class GameState {
+    LOADING, STARTED, ENDED
+}
