@@ -21,6 +21,7 @@ repositories {
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
     implementation("no.tornado:tornadofx:1.7.20")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     implementation("junit:junit:4.12")
     testImplementation(kotlin("test-junit"))
