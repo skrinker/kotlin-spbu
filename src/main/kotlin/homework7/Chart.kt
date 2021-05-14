@@ -1,5 +1,5 @@
-import homework7.Statistics
-import homework7.getMethodsList
+package homework7
+
 import javafx.beans.property.SimpleIntegerProperty
 import javafx.scene.chart.NumberAxis
 import tornadofx.App
@@ -18,9 +18,10 @@ import tornadofx.textfield
 import tornadofx.vbox
 
 private val inputData = object : ViewModel() {
-    val numberOfThreads = bind { SimpleIntegerProperty() }
+    val minThreads = bind { SimpleIntegerProperty() }
+    val maxThreads = bind { SimpleIntegerProperty() }
     val arraySize = bind { SimpleIntegerProperty() }
-    val offset = bind { SimpleIntegerProperty() }
+    val stepSize = bind { SimpleIntegerProperty() }
     val averageStep = bind { SimpleIntegerProperty() }
 }
 
@@ -28,8 +29,13 @@ class InputView : View() {
     override val root = vbox {
         form {
             fieldset {
-                field("Number of threads") {
-                    textfield(inputData.numberOfThreads) {
+                field("Minimum number of threads (2^N)") {
+                    textfield(inputData.minThreads) {
+                        required()
+                    }
+                }
+                field("Maximum number of threads (2^N)") {
+                    textfield(inputData.maxThreads) {
                         required()
                     }
                 }
@@ -38,8 +44,8 @@ class InputView : View() {
                         required()
                     }
                 }
-                field("Offset") {
-                    textfield(inputData.offset) {
+                field("Step for array size") {
+                    textfield(inputData.stepSize) {
                         required()
                     }
                 }
@@ -62,14 +68,13 @@ class InputView : View() {
 class ChartView : View() {
     override val root = vbox {
         linechart("Multi-threaded merge sort algorithm", NumberAxis(), NumberAxis()) {
-            getMethodsList().forEach {
+            getMethodsList(inputData.minThreads.value, inputData.maxThreads.value).forEach {
                 series(it.name) {
                     Statistics(it).getStatistics(
                         inputData.arraySize.value,
-                        inputData.offset.value,
-                        inputData.averageStep.value,
+                        inputData.stepSize.value,
                         inputData.averageStep.value
-                    ).forEach { data(it.first, it.second) }
+                    ).forEach { data(it.size, it.averageTime) }
                 }
             }
         }
