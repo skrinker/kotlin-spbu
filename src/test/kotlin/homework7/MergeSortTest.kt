@@ -1,4 +1,4 @@
-package homework6
+package homework7
 
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.params.ParameterizedTest
