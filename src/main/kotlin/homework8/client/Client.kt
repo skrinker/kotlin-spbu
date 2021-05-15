@@ -15,6 +15,7 @@ import tornadofx.View
 import tornadofx.button
 import tornadofx.circle
 import tornadofx.clear
+import tornadofx.find
 import tornadofx.gridpane
 import tornadofx.group
 import tornadofx.label
@@ -26,10 +27,6 @@ import tornadofx.vbox
 
 private val board = FXCollections.observableArrayList<CellValue>()
 private val gameState = FXCollections.observableArrayList<GameState>()
-
-fun main(args: Array<String>) {
-    Application.launch(TicTacToe::class.java, *args)
-}
 
 fun updateBoard(newBoard: Array<CellValue>) {
     board.removeAll()
@@ -43,18 +40,21 @@ fun updateGameState(newGameState: GameState) {
     gameState.add(newGameState)
 }
 
+fun showResult() {
+    find<TicTacToeGrid>().replaceWith<ResultWindow>()
+}
+
 class TicTacToe : App(TicTacToeGrid::class)
 
-class StatusWindow : View("Status window") {
+class ResultWindow : View("Result window") {
     private val windowController = WindowController()
     override val root = vbox {
-        gameState.onChange {
-            label(windowController.getStatusText())
-        }
+        label(windowController.getStatusText())
     }
 }
 
 class TicTacToeGrid : View("Tic-Tac-Toe") {
+    @Suppress("MagicNumber")
     private fun GridPane.printBoard(board: Array<CellValue>) {
         for (i in 0..2) {
             row {
@@ -69,8 +69,7 @@ class TicTacToeGrid : View("Tic-Tac-Toe") {
         }
     }
 
-    private val controller = WindowController()
-
+    @Suppress("MagicNumber")
     override val root = vbox {
         gridpane {
             prefWidth = 600.0
@@ -78,8 +77,10 @@ class TicTacToeGrid : View("Tic-Tac-Toe") {
             style = "-fx-background-color: #ffffff"
             printBoard(playerInformation.gameInformation.board)
             board.onChange {
-                clear()
-                printBoard(playerInformation.gameInformation.board)
+                Platform.runLater {
+                    clear()
+                    printBoard(playerInformation.gameInformation.board)
+                }
             }
         }
     }
@@ -94,6 +95,7 @@ class TicTacToeGrid : View("Tic-Tac-Toe") {
         opcr(this, tornadofx.find(Circle::class).root, op)
 }
 
+@Suppress("MagicNumber")
 class Circle : ItemFragment<CellValue>() {
     override val root = button {
         prefWidth = 200.0
@@ -112,6 +114,7 @@ class Circle : ItemFragment<CellValue>() {
     }
 }
 
+@Suppress("MagicNumber")
 class Empty : ItemFragment<CellValue>() {
     private val playerController = PLayerController()
     override val root = button {
@@ -124,6 +127,7 @@ class Empty : ItemFragment<CellValue>() {
     }
 }
 
+@Suppress("MagicNumber")
 class Cross : ItemFragment<CellValue>() {
     override val root = button {
         prefWidth = 200.0
@@ -150,4 +154,8 @@ class Cross : ItemFragment<CellValue>() {
             }
         }
     }
+}
+
+fun main() {
+    Application.launch(TicTacToe::class.java)
 }

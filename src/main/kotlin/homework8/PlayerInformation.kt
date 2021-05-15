@@ -3,6 +3,7 @@ package homework8
 import kotlinx.serialization.Serializable
 
 const val DEFAULT_VALUE = -2
+const val BOARD_SIZE = 9
 
 @Serializable
 data class PlayerInformation(
@@ -21,7 +22,7 @@ data class GameInformation(
     var gameState: GameState = GameState.LOADING,
     var currentMoveId: Int = DEFAULT_VALUE,
     var isDraw: Boolean = false,
-    var board: Array<CellValue> = Array(9) { CellValue.Empty },
+    var board: Array<CellValue> = Array(BOARD_SIZE) { CellValue.Empty },
     var winnerId: Int = DEFAULT_VALUE,
 )
 

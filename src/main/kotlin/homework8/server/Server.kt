@@ -11,10 +11,21 @@ import io.ktor.websocket.WebSockets
 import io.ktor.websocket.webSocket
 import kotlinx.serialization.json.Json
 
+@Suppress("MagicNumber")
 class Game {
     private var isStarted: Boolean = false
     private val connections: MutableList<Connection> = mutableListOf<Connection>()
     private val players: MutableList<PlayerInformation> = mutableListOf<PlayerInformation>()
+    private val winIndex = listOf(
+        intArrayOf(0, 1, 2),
+        intArrayOf(3, 4, 5),
+        intArrayOf(6, 7, 8),
+        intArrayOf(0, 4, 8),
+        intArrayOf(2, 4, 6),
+        intArrayOf(0, 3, 6),
+        intArrayOf(1, 4, 7),
+        intArrayOf(2, 5, 8)
+    )
 
     private fun setStartValues() {
         players[0].playerType = CellValue.Cross
@@ -38,14 +49,12 @@ class Game {
                     ).toString()
                 )
             )
-            println("Sended")
         }
     }
 
     suspend fun startGame() {
         if (players.size == 2 && !isStarted) {
             val updatedGameInformation = GameInformation(gameState = GameState.STARTED, currentMoveId = 0)
-            println("Game started")
             setStartValues()
             sendGameInformation(updatedGameInformation)
             isStarted = true
@@ -61,20 +70,27 @@ class Game {
     }
 
     private fun checkWinner(player: PlayerInformation, board: Array<CellValue>): Int {
-        if (player.playerType == CellValue.Empty) {
-            return DEFAULT_VALUE
+        var winnerId: Int = DEFAULT_VALUE
+        winIndex.forEach {
+            when {
+                board[it[0]] == board[it[1]] && board[it[1]] == board[it[2]] &&
+                    board[it[1]] == player.playerType && player.playerType != CellValue.Empty -> {
+                    winnerId = player.playerId
+                }
+            }
         }
-        if (board[0] == player.playerType && board[1] == board[2] && player.playerType == board[1]) {
-            return player.playerId
-        }
-        return DEFAULT_VALUE
+        return winnerId
     }
 
     private fun checkDraw(board: Array<CellValue>): Boolean = board.indexOf(CellValue.Empty) == -1
 
     private suspend fun updateGameInformation(gameInformation: GameInformation) {
-        for (i in players.indices) {
-            gameInformation.winnerId = checkWinner(players[i], gameInformation.board)
+        for (player in players) {
+            val winnerId = checkWinner(player, gameInformation.board)
+            if (winnerId != DEFAULT_VALUE) {
+                gameInformation.winnerId = winnerId
+                gameInformation.gameState = GameState.ENDED
+            }
         }
         gameInformation.currentMoveId = (gameInformation.currentMoveId + 1) % players.size
         if (checkDraw(gameInformation.board)) {
@@ -87,7 +103,6 @@ class Game {
     suspend fun handleRequest(webSocket: DefaultWebSocketSession) {
         for (frame in webSocket.incoming) {
             val playerInformationFrame = frame as? Frame.Text ?: continue
-            println(playerInformationFrame.readText())
             val gameInformation = Json.decodeFromString(
                 PlayerInformation.serializer(),
                 playerInformationFrame.readText()
@@ -112,11 +127,7 @@ fun main() {
                 game.addPlayer(game.getNewPlayerInformation())
                 game.sendGameInformation(GameInformation(GameState.LOADING, DEFAULT_VALUE, false))
                 game.startGame()
-                try {
-                    game.handleRequest(this)
-                } catch (error: Exception) {
-                    println(error.localizedMessage)
-                }
+                game.handleRequest(this)
             }
         }
     }.start(wait = true)

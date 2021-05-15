@@ -22,7 +22,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:3.14.6")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
     implementation("no.tornado:tornadofx:1.7.20")
-    implementation("no.tornado:tornadofx:1.7.20")
     implementation("org.openjfx:javafx-base:11.0.2")
     implementation("org.openjfx:javafx:11.0.2")
     implementation("org.openjfx:javafx-controls:11.0.2")

@@ -18,13 +18,13 @@ var playerInformation = PlayerInformation()
 private var webSocket: WebSocketController = WebSocketController()
 
 class PLayerController : Controller() {
+    @Suppress("MagicNumber")
     fun registerMove(mouseEvent: MouseEvent) {
         if (playerInformation.gameInformation.currentMoveId == playerInformation.playerId) {
             val x = (mouseEvent.sceneX.toInt() - 1) / 200
             val y = (mouseEvent.sceneY.toInt() - 1) / 200
             playerInformation.gameInformation.board[y * 3 + x] = playerInformation.playerType
             updateBoard(playerInformation.gameInformation.board)
-            println("Sent")
             webSocket.sendPlayerInformation()
         }
     }
@@ -32,18 +32,17 @@ class PLayerController : Controller() {
 
 class WindowController : Controller() {
     fun getStatusText(): String {
-        val statusText: String
+        var statusText = ""
         val gameInformation = playerInformation.gameInformation
-        println(gameInformation.toString())
-        statusText = when (gameInformation.gameState) {
-            GameState.LOADING -> "Loading"
-            GameState.ENDED -> 
-                if (gameInformation.winnerId != DEFAULT_VALUE) {
-                    if (gameInformation.winnerId == playerInformation.playerId) "Win"
-                    else "Lose"
-                } else
-                    "Draw"
-            else -> "Wrong"
+        if (gameInformation.gameState == GameState.ENDED && gameInformation.winnerId == DEFAULT_VALUE) {
+            statusText = "Draw"
+        }
+        if (gameInformation.gameState == GameState.ENDED && gameInformation.winnerId != DEFAULT_VALUE) {
+            if (gameInformation.winnerId == playerInformation.playerId) {
+                statusText = "Win"
+            } else {
+                statusText = "Lose"
+            }
         }
         return statusText
     }
@@ -70,22 +69,20 @@ class EchoWebSocketListener : WebSocketListener() {
     }
 
     override fun onMessage(webSocket: WebSocket?, text: String) {
-        println(text)
         playerInformation = Json.decodeFromString(PlayerInformation.serializer(), text)
         val gameInformation = playerInformation.gameInformation
-        if (gameInformation.gameState == GameState.STARTED)
-            Platform.runLater {
+        when (gameInformation.gameState) {
+            GameState.LOADING -> Platform.runLater {
                 updateBoard(gameInformation.board)
             }
-        if (gameInformation.gameState == GameState.ENDED || gameInformation.gameState == GameState.LOADING) {
-            Platform.runLater {
+            GameState.STARTED -> Platform.runLater {
+                updateBoard(gameInformation.board)
+            }
+            GameState.ENDED -> Platform.runLater {
                 updateBoard(gameInformation.board)
                 updateGameState(gameInformation.gameState)
+                showResult()
             }
         }
-    }
-
-    override fun onClosing(webSocket: WebSocket, code: Int, reason: String) {
-        webSocket.close(100, null)
     }
 }
