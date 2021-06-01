@@ -34,7 +34,7 @@ internal class ParseYamlTest {
         )
     }
 
-    @MethodSource("inputData")
+    @MethodSource("homework7.inputData")
     @ParameterizedTest(name = "test {index}, {1}")
     fun parseYaml(expected: Config, inputPath: String) {
         assertEquals(expected, Config.parseYaml(javaClass.getResource(inputPath).path))

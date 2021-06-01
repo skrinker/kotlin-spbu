@@ -28,5 +28,5 @@ data class GameInformation(
 
 @Serializable
 enum class GameState {
-    LOADING, STARTED, ENDED
+    LOADING, STARTED, ENDED, WAITING
 }

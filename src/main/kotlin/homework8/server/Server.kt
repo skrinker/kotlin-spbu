@@ -1,5 +1,6 @@
 package homework8
 
+import homework8.server.PORT
 import io.ktor.application.install
 import io.ktor.http.cio.websocket.DefaultWebSocketSession
 import io.ktor.http.cio.websocket.Frame
@@ -13,9 +14,11 @@ import kotlinx.serialization.json.Json
 
 @Suppress("MagicNumber")
 class Game {
-    private var isStarted: Boolean = false
-    private val connections: MutableList<Connection> = mutableListOf<Connection>()
-    private val players: MutableList<PlayerInformation> = mutableListOf<PlayerInformation>()
+    private var gameState: GameState = GameState.LOADING
+
+    private val connections = mutableListOf<Connection>()
+    private val players = mutableListOf<PlayerInformation>()
+
     private val winIndex = listOf(
         intArrayOf(0, 1, 2),
         intArrayOf(3, 4, 5),
@@ -28,10 +31,18 @@ class Game {
     )
 
     private fun setStartValues() {
-        players[0].playerType = CellValue.Cross
-        players[0].playerId = 0
-        players[1].playerType = CellValue.Circle
-        players[1].playerId = 1
+        require(players.size > 1) {
+            throw IndexOutOfBoundsException()
+        }
+
+        for (currentPlayerIndex in 0 until players.size) {
+            players[currentPlayerIndex].playerId = currentPlayerIndex
+            players[currentPlayerIndex].playerType = when (currentPlayerIndex) {
+                0 -> CellValue.Cross
+                1 -> CellValue.Circle
+                else -> CellValue.Empty
+            }
+        }
     }
 
     fun getNewPlayerInformation() = PlayerInformation(connections.size, CellValue.Empty, GameInformation())
@@ -52,12 +63,12 @@ class Game {
         }
     }
 
-    suspend fun startGame() {
-        if (players.size == 2 && !isStarted) {
+    suspend fun startNewGame() {
+        if (players.size == 2 && gameState != GameState.STARTED) {
             val updatedGameInformation = GameInformation(gameState = GameState.STARTED, currentMoveId = 0)
             setStartValues()
             sendGameInformation(updatedGameInformation)
-            isStarted = true
+            gameState = GameState.WAITING
         }
     }
 
@@ -115,7 +126,7 @@ class Game {
 class Connection(val session: DefaultWebSocketSession)
 
 fun main() {
-    embeddedServer(Netty, port = 8000) {
+    embeddedServer(Netty, PORT) {
         install(WebSockets) {
             masking = false
         }
@@ -126,7 +137,7 @@ fun main() {
                 game.addConnection(Connection(this))
                 game.addPlayer(game.getNewPlayerInformation())
                 game.sendGameInformation(GameInformation(GameState.LOADING, DEFAULT_VALUE, false))
-                game.startGame()
+                game.startNewGame()
                 game.handleRequest(this)
             }
         }
