@@ -1,6 +1,5 @@
-package homework4.AVLTree
+package homework4.avltree
 
-import Tree
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
@@ -12,8 +11,6 @@ internal class TreeTest {
     private val tree = Tree<String, String>()
 
     companion object {
-        val data = mapOf("a" to "abc", "b" to "cab", "c" to "cba")
-
         @JvmStatic
         fun sizeData() = listOf(
             Arguments.of(1, mapOf("a" to "abc")),
