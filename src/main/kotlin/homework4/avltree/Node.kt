@@ -9,8 +9,8 @@ class Node<K : Comparable<K>, V>(override val key: K, override var value: V): Mu
     private var right: Node<K, V>? = null
     private var height: Int = 1
     private val size: Int
-        get() = if (right == null && left==null) 0
-        else if (right != null && left!=null) 2
+        get() = if (right == null && left == null) 0
+        else if (right != null && left != null) 2
         else 1
 
 
@@ -29,7 +29,7 @@ class Node<K : Comparable<K>, V>(override val key: K, override var value: V): Mu
 
     private fun balance(): Node<K, V> {
         this.updateHeight()
-        return when(this.getBalanceFactor()) {
+        return when (this.getBalanceFactor()) {
             UNBALANCED_STATE_FACTOR -> {
                 if (this.right?.getBalanceFactor() ?: 0 < 0) {
                     this.right = this.right?.rotateRight()
