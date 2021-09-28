@@ -21,7 +21,7 @@ class Node<K : Comparable<K>, V>(override val key: K, override var value: V): Mu
     fun getNodeByKey(key: K): Node<K, V>? =
         when {
             key < this.key -> this.left?.getNodeByKey(key)
-            key < this.key -> this.right?.getNodeByKey(key)
+            key > this.key -> this.right?.getNodeByKey(key)
             else -> this
         }
 
