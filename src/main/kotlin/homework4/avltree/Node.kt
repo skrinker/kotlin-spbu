@@ -3,6 +3,7 @@ package homework4.avltree
 import java.lang.Integer.max
 const val UNBALANCED_STATE_FACTOR = 2
 
+@Suppress("TooManyFunctions")
 class Node<K : Comparable<K>, V>(override val key: K, override var value: V): MutableMap.MutableEntry<K, V> {
     private var left: Node<K, V>? = null
     private var right: Node<K, V>? = null
