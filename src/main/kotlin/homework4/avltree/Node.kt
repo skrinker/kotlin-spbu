@@ -4,7 +4,7 @@ import java.lang.Integer.max
 const val UNBALANCED_STATE_FACTOR = 2
 
 @Suppress("TooManyFunctions")
-class Node<K : Comparable<K>, V>(override val key: K, override var value: V): MutableMap.MutableEntry<K, V> {
+class Node<K: Comparable<K>, V>(override val key: K, override var value: V): MutableMap.MutableEntry<K, V> {
     private var left: Node<K, V>? = null
     private var right: Node<K, V>? = null
     private var height: Int = 1
@@ -12,7 +12,6 @@ class Node<K : Comparable<K>, V>(override val key: K, override var value: V): Mu
         get() = if (right == null && left == null) 0
         else if (right != null && left != null) 2
         else 1
-
 
     override fun setValue(newValue: V): V = newValue.also { this.value = it }
 
