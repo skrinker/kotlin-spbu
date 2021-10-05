@@ -6,19 +6,19 @@ import kotlinx.serialization.Serializable
  * Action.
  */
 @Serializable
-sealed class Action {
+sealed class Action<T> {
      /**
      * Executes action.
      *
      * @param numbers List of the numbers.
      */
-    abstract fun execute(numbers: MutableList<Int>)
+    abstract fun execute(numbers: MutableList<T>)
   /**
      * Undo action.
      *
      * @param numbers List of the numbers.
      */
-    abstract fun undo(numbers: MutableList<Int>)
+    abstract fun undo(numbers: MutableList<T>)
 }
 
 /**
@@ -28,19 +28,19 @@ sealed class Action {
  */
 @Serializable
 @SerialName("InsertBack")
-class InsertBack(private val value: Int) : Action() {
+class InsertBack<T> (private val value: T) : Action<T>() {
     /**
      * Executes adding number at the end of the list.
      *
      * @param numbers List of the numbers.
      */
-    override fun execute(numbers: MutableList<Int>) = numbers.add(numbers.size, value)
+    override fun execute(numbers: MutableList<T>) = numbers.add(numbers.size, value)
     /**
      * Undo adding number at the end of the list.
      *
      * @param numbers List of the numbers.
      */
-    override fun undo(numbers: MutableList<Int>) {
+    override fun undo(numbers: MutableList<T>) {
         numbers.removeLast()
     }
 }
@@ -52,19 +52,19 @@ class InsertBack(private val value: Int) : Action() {
  */
 @Serializable
 @SerialName("Push")
-class Push(private val value: Int) : Action() {
+class Push<T>(private val value: T) : Action<T>() {
     /**
      * Executes adding number at the beginning of the list.
      *
      * @param numbers List of the numbers.
      */
-    override fun execute(numbers: MutableList<Int>) = numbers.add(0, value)
+    override fun execute(numbers: MutableList<T>) = numbers.add(0, value)
     /**
      * Undo adding number at the beginning of the list.
      *
      * @param numbers List of the numbers.
      */
-    override fun undo(numbers: MutableList<Int>) {
+    override fun undo(numbers: MutableList<T>) {
         numbers.removeFirst()
     }
 }
@@ -74,15 +74,15 @@ class Push(private val value: Int) : Action() {
  */
 @Serializable
 @SerialName("Rearrange")
-class Rearrange(private val to: Int, private val from: Int) : Action() {
-    private fun MutableList<Int>.containsIndex(index: Int): Boolean = (index >= 0 && index < this.size)
+class Rearrange<T>(private val to: Int, private val from: Int) : Action<T>() {
+    private fun MutableList<T>.containsIndex(index: Int): Boolean = (index >= 0 && index < this.size)
     /**
      * Supports changing element position.
      *
      * @param to New position.
      * @param from Previous position.
      */
-    private fun replace(to: Int, from: Int, numbers: MutableList<Int>) {
+    private fun replace(to: Int, from: Int, numbers: MutableList<T>) {
         if (numbers.containsIndex(to) && numbers.containsIndex(from)) {
             val temp = numbers.removeAt(from)
             numbers.add(to, temp)
@@ -93,11 +93,11 @@ class Rearrange(private val to: Int, private val from: Int) : Action() {
      *
      * @param numbers List of the numbers.
      */
-    override fun execute(numbers: MutableList<Int>) = replace(to, from, numbers)
+    override fun execute(numbers: MutableList<T>) = replace(to, from, numbers)
     /**
      * Undo changing element position.
      *
      * @param numbers List of the numbers.
      */
-    override fun undo(numbers: MutableList<Int>) = replace(to, from, numbers)
+    override fun undo(numbers: MutableList<T>) = replace(from, to, numbers)
 }
