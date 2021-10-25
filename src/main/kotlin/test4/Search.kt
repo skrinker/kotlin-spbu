@@ -13,8 +13,8 @@ import tornadofx.singleAssign
 import tornadofx.textfield
 import tornadofx.vbox
 
-class Search: View() {
-    private val results : ObservableList<String> = observableListOf()
+class Search : View() {
+    private val results: ObservableList<String> = observableListOf()
     private val controller = Controller()
     private var searchString: TextField by singleAssign()
 

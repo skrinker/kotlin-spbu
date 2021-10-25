@@ -2,35 +2,35 @@ package test4.Response
 
 import com.google.gson.annotations.SerializedName
 
-data class Results (
+data class Results(
 
     @SerializedName("url")
-    val url : String,
+    val url: String,
 
     @SerializedName("title")
-    val title : String,
+    val title: String,
 
     @SerializedName("content")
-    val content : String,
+    val content: String,
 
     @SerializedName("engine")
-    val engine : String,
+    val engine: String,
 
     @SerializedName("parsed_url")
-    val parsed_url : List<String>,
+    val parsedUrl: List<String>,
 
     @SerializedName("engines")
-    val engines : List<String>,
+    val engines: List<String>,
 
     @SerializedName("positions")
-    val positions : List<Int>,
+    val positions: List<Int>,
 
     @SerializedName("score")
-    val score : Double,
+    val score: Double,
 
     @SerializedName("category")
-    val category : String,
+    val category: String,
 
     @SerializedName("pretty_url")
-    val pretty_url : String
+    val prettyUrl: String
 )
