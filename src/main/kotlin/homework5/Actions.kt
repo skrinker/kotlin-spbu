@@ -14,22 +14,22 @@ interface Action<K, T> {
 
 object Add : Action<String, String> {
     override fun execute(hashtable: HashTable<String, String>) {
-        var input = getUserInput("value")
-        var key = getUserInput("key")
+        val input = getUserInput("value")
+        val key = getUserInput("key")
         hashtable.add(key, input)
     }
 }
 
 object Remove : Action<String, String> {
     override fun execute(hashtable: HashTable<String, String>) {
-        var key = getUserInput("key")
+        val key = getUserInput("key")
         hashtable.remove(key) ?: println("No such key")
     }
 }
 
 object Find : Action<String, String> {
     override fun execute(hashtable: HashTable<String, String>) {
-        var key = getUserInput("key")
+        val key = getUserInput("key")
         val element = hashtable[key]
         if (element != null) println(element.value)
         else println("No such key")
