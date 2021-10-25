@@ -10,15 +10,15 @@ sealed class Action<T> {
      /**
      * Executes action.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    abstract fun execute(numbers: MutableList<T>)
+    abstract fun execute(values: MutableList<T>)
   /**
      * Undo action.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    abstract fun undo(numbers: MutableList<T>)
+    abstract fun undo(values: MutableList<T>)
 }
 
 /**
@@ -32,16 +32,16 @@ class InsertBack<T> (private val value: T) : Action<T>() {
     /**
      * Executes adding number at the end of the list.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    override fun execute(numbers: MutableList<T>) = numbers.add(numbers.size, value)
+    override fun execute(values: MutableList<T>) = values.add(values.size, value)
     /**
      * Undo adding number at the end of the list.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    override fun undo(numbers: MutableList<T>) {
-        numbers.removeLast()
+    override fun undo(values: MutableList<T>) {
+        values.removeLast()
     }
 }
 
@@ -56,16 +56,16 @@ class Push<T>(private val value: T) : Action<T>() {
     /**
      * Executes adding number at the beginning of the list.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    override fun execute(numbers: MutableList<T>) = numbers.add(0, value)
+    override fun execute(values: MutableList<T>) = values.add(0, value)
     /**
      * Undo adding number at the beginning of the list.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    override fun undo(numbers: MutableList<T>) {
-        numbers.removeFirst()
+    override fun undo(values: MutableList<T>) {
+        values.removeFirst()
     }
 }
 
@@ -82,22 +82,22 @@ class Rearrange<T>(private val to: Int, private val from: Int) : Action<T>() {
      * @param to New position.
      * @param from Previous position.
      */
-    private fun replace(to: Int, from: Int, numbers: MutableList<T>) {
-        if (numbers.containsIndex(to) && numbers.containsIndex(from)) {
-            val temp = numbers.removeAt(from)
-            numbers.add(to, temp)
+    private fun replace(to: Int, from: Int, values: MutableList<T>) {
+        if (values.containsIndex(to) && values.containsIndex(from)) {
+            val temp = values.removeAt(from)
+            values.add(to, temp)
         }
     }
     /**
      * Executes changing element position.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    override fun execute(numbers: MutableList<T>) = replace(to, from, numbers)
+    override fun execute(values: MutableList<T>) = replace(to, from, values)
     /**
      * Undo changing element position.
      *
-     * @param numbers List of the numbers.
+     * @param values List of the values.
      */
-    override fun undo(numbers: MutableList<T>) = replace(from, to, numbers)
+    override fun undo(values: MutableList<T>) = replace(from, to, values)
 }
