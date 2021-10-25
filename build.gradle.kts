@@ -19,6 +19,7 @@ repositories {
 }
 
 dependencies {
+    implementation("com.google.code.gson:gson:2.8.8")
     implementation("com.squareup.okhttp3:okhttp:3.14.6")
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.4.0")
     implementation("no.tornado:tornadofx:1.7.20")
