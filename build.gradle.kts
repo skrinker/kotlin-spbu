@@ -26,6 +26,7 @@ dependencies {
     implementation("org.openjfx:javafx-base:11.0.2")
     implementation("org.openjfx:javafx:11.0.2")
     implementation("org.openjfx:javafx-controls:11.0.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3")
     implementation("org.junit.jupiter:junit-jupiter:5.4.2")
     implementation("io.ktor:ktor-websockets:1.5.4")
     implementation("io.ktor:ktor-server-core:1.5.4")
