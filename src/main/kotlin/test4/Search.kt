@@ -16,7 +16,7 @@ import tornadofx.vbox
 class Search: View() {
     private val results : ObservableList<String> = observableListOf()
     private val controller = Controller()
-    var searchString: TextField by singleAssign()
+    private var searchString: TextField by singleAssign()
 
     override val root = vbox {
         hbox {
