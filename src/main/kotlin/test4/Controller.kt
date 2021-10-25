@@ -1,10 +1,10 @@
 package test4
 
-import Response
 import com.google.gson.Gson
 import java.net.HttpURLConnection
 import java.net.URL
 import javafx.collections.ObservableList
+import test4.Response.Response
 import tornadofx.runAsync
 
 class Controller {
