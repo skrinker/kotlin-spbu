@@ -19,7 +19,7 @@ private fun MutableList<Int>.print() {
 }
 
 fun main() {
-    val commandStorage = PerformedCommandStorage()
+    val commandStorage = PerformedCommandStorage<Int>()
     val numbers = mutableListOf<Int>()
 
     numbers.print()
